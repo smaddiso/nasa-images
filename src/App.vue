@@ -1,28 +1,35 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div>
+    <h1>NASA Images</h1>
+    <div>
+      <images-list :images='images'></images-list>
+    </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import ImagesList from './components/ImagesList.vue';
+import {eventBus} from './main.js';
 
 export default {
   name: 'App',
+  data(){
+    return {
+      images: []
+    };
+  },
+  mounted(){
+    fetch('https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?sol=1000&api_key=DEMO_KEY')
+    .then(result => result.json())
+    .then(images => this.images = images)
+  },
   components: {
-    HelloWorld
+    "images-list": ImagesList
   }
 }
+
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+
 </style>
